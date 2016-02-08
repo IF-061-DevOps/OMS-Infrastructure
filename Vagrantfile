@@ -11,6 +11,10 @@ Vagrant.configure(2) do |config|
     ansible.vm.box = "centos/7"
     ansible.vm.hostname = "ansible"
     ansible.vm.network "private_network", ip: "192.168.22.10"
+    ansible.vm.provision "shell", inline: <<-SHELL
+      sudo yum install epel-release -y
+      sudo yum install ansible -y
+SHELL
   end
 
   # config.vm.box = "centos/7"
