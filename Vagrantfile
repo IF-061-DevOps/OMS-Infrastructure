@@ -17,6 +17,18 @@ Vagrant.configure(2) do |config|
 SHELL
   end
 
+  config.vm.define "web1" do |web1|
+    web1.vm.box = "centos/7"
+    web1.vm.hostname = "web1"
+    web1.vm.network "private_network", ip: "192.168.22.21"
+  end
+
+  config.vm.define "web2" do |web2|
+    web2.vm.box = "centos/7"
+    web2.vm.hostname = "web1"
+    web2.vm.network "private_network", ip: "192.168.22.22"
+  end
+
   # config.vm.box = "centos/7"
   # config.vm.network "forwarded_port", guest: 80, host: 8080
   # config.vm.network "private_network", ip: "192.168.33.10"
