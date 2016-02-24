@@ -15,6 +15,7 @@ Vagrant.configure(2) do |config|
       sudo yum install epel-release -y
       sudo yum install ansible -y
 SHELL
+    ansible.ssh.forward_agent = true
   end
 
   config.vm.define "balancer" do |balancer|
@@ -22,18 +23,21 @@ SHELL
     balancer.vm.hostname = "balancer"
     balancer.vm.network "private_network", ip: "192.168.22.11"
     balancer.vm.network "public_network", bridge: "wlan0"
+    balancer.ssh.forward_agent = true
   end
 
   config.vm.define "jenkins" do |jenkins|
     jenkins.vm.box = "centos/7"
     jenkins.vm.hostname = "jenkins"
     jenkins.vm.network "private_network", ip: "192.168.22.12"
+    jenkins.ssh.forward_agent = true
   end
 
   config.vm.define "zabbix" do |zabbix|
     zabbix.vm.box = "centos/7"
     zabbix.vm.hostname = "zabbix"
     zabbix.vm.network "private_network", ip: "192.168.22.13"
+    zabbix.ssh.forward_agent = true
   end
 
   config.vm.define "repo" do |repo|
@@ -83,6 +87,13 @@ SHELL
     db2.vm.hostname = "db2"
     db2.vm.network "private_network", ip: "192.168.22.32"
     db2.ssh.forward_agent = true
+  end
+
+  config.vm.define "db3" do |db3|
+    db3.vm.box = "centos/7"
+    db3.vm.hostname = "db3"
+    db3.vm.network "private_network", ip: "192.168.22.33"
+    db3.ssh.forward_agent = true
   end
 
 end
