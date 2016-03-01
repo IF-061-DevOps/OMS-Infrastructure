@@ -5,12 +5,17 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
+
 Vagrant.configure(2) do |config|
+
+  config.vm.provision "shell", :inline => "sudo cp /home/vagrant/sync/hosts /etc/hosts", run: "always"
 
   config.vm.define "ansible" do |ansible|
     ansible.vm.box = "centos/7"
-    ansible.vm.hostname = "ansible"
-    ansible.vm.network "private_network", ip: "192.168.22.10"
+    ansible.vm.hostname = "ansible.devops.local"
+    ansible.vm.network "private_network", ip: "192.168.22.10" 
     ansible.vm.provision "shell", inline: <<-SHELL
       sudo yum install epel-release -y
       sudo yum install ansible -y
@@ -22,7 +27,7 @@ SHELL
     balancer.vm.box = "centos/7"
     balancer.vm.hostname = "balancer"
     balancer.vm.network "private_network", ip: "192.168.22.11"
-    balancer.vm.network "public_network", bridge: "wlan0"
+    balancer.vm.network "public_network", bridge: "eth0"
     balancer.ssh.forward_agent = true
   end
 
@@ -47,11 +52,11 @@ SHELL
     repo.ssh.forward_agent = true
   end
 
-  config.vm.define "rsyslog" do |rsyslog|
-    rsyslog.vm.box = "centos/7"
-    rsyslog.vm.hostname = "rsyslog"
-    rsyslog.vm.network "private_network", ip: "192.168.22.15"
-    rsyslog.ssh.forward_agent = true
+  config.vm.define "logs" do |logs|
+    logs.vm.box = "centos/7"
+    logs.vm.hostname = "logs"
+    logs.vm.network "private_network", ip: "192.168.22.15"
+    logs.ssh.forward_agent = true
   end
 
   config.vm.define "web1" do |web1|
