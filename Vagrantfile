@@ -18,7 +18,8 @@ Vagrant.configure(2) do |config|
     ansible.vm.network "private_network", ip: "192.168.22.10" 
     ansible.vm.provision "shell", inline: <<-SHELL
       sudo yum install epel-release -y
-      sudo yum install ansible -y
+      sudo yum install PyYAML python-httplib2 python-jinja2 python-keyczar python-paramiko python-setuptools python-six sshpass -y
+      sudo yum install ansible.rpm http://releases.ansible.com/ansible-network/2.0.1.0-0.2/ansible-2.0.1.0-0.2.network.el7.centos.noarch.rpm -y
 SHELL
     ansible.ssh.forward_agent = true
   end
